@@ -1,4 +1,16 @@
-host: localhost:3000
+definitions:
+  requests.CreateUserRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  responses.CreateUserResponse:
+    properties:
+      username:
+        type: string
+    type: object
 info:
   contact:
     email: support@swagger.io
@@ -17,13 +29,49 @@ paths:
       description: Health checking for the service
       operationId: HealthHandler
       produces:
-      - text/plain
+      - application/json
       responses:
         "200":
           description: OK
           schema:
             type: string
       summary: Health Check
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: create new user
+      operationId: CreateUserHandler
+      parameters:
+      - description: With x-id header
+        in: header
+        name: X-ID
+        required: true
+        type: string
+      - description: Data for create user
+        in: body
+        name: User
+        required: true
+        schema:
+          $ref: '#/definitions/requests.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/responses.CreateUserResponse'
+        "400":
+          description: Bad Request
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create user
+      tags:
+      - users
 securityDefinitions:
   ApiKeyAuth:
     in: header

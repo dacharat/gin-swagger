@@ -37,7 +37,7 @@ var doc = `{
             "get": {
                 "description": "Health checking for the service",
                 "produces": [
-                    "text/plain"
+                    "application/json"
                 ],
                 "summary": "Health Check",
                 "operationId": "HealthHandler",
@@ -48,6 +48,83 @@ var doc = `{
                             "type": "string"
                         }
                     }
+                }
+            }
+        },
+        "/user": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "create new user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "users"
+                ],
+                "summary": "Create user",
+                "operationId": "CreateUserHandler",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "With x-id header",
+                        "name": "X-ID",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Data for create user",
+                        "name": "User",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/requests.CreateUserRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/responses.CreateUserResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "object",
+                            "additionalProperties": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "requests.CreateUserRequest": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "responses.CreateUserResponse": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string"
                 }
             }
         }
@@ -118,7 +195,7 @@ type swaggerInfo struct {
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = swaggerInfo{
 	Version:     "1.0",
-	Host:        "localhost:3000",
+	Host:        "",
 	BasePath:    "",
 	Schemes:     []string{},
 	Title:       "Swagger Example API",

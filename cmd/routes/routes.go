@@ -17,7 +17,7 @@ func Init() *gin.Engine {
 	userV1 := r.Group("/user")
 	{
 		userHandler := handlers.NewUserHandler()
-		userV1.POST("", userHandler.CreateUserHandler)
+		userV1.POST("", AuthMiddleware(), userHandler.CreateUserHandler)
 
 		userV1.GET("/:user_id", userHandler.GetUserHandler)
 		userV1.PUT("/:user_id", userHandler.UpdateUserHandler)

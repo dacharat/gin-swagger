@@ -1,6 +1,9 @@
 # gin swagger example
 
-### Get start
+### Get started
+
+- Generate swagger docs
+
 ```
 export PATH=$(go env GOPATH)/bin:$PATH
 

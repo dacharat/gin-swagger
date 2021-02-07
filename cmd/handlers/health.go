@@ -11,9 +11,9 @@ import (
 // @summary Health Check
 // @description Health checking for the service
 // @id HealthHandler
-// @produce plain
+// @produce json
 // @response 200 {string} string "OK"
 // @router /health [get]
 func HealthHandler(c *gin.Context) {
-	c.JSON(http.StatusOK, time.Now())
+	c.JSON(http.StatusOK, gin.H{"time": time.Now()})
 }

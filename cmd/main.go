@@ -1,15 +1,11 @@
 package main
 
 import (
-	"github.com/dacharat/gin-swagger/cmd/handlers"
-	"github.com/gin-gonic/gin"
-	ginSwagger "github.com/swaggo/gin-swagger"
-	"github.com/swaggo/gin-swagger/swaggerFiles"
-
 	_ "github.com/dacharat/gin-swagger/cmd/docs"
+	"github.com/dacharat/gin-swagger/cmd/routes"
 )
 
-//go:generate swag init -o cmd/docs
+//go:generate swag init -o ./docs
 
 // @title Swagger Example API
 // @version 1.0
@@ -23,7 +19,6 @@ import (
 // @license.name Apache 2.0
 // @license.url http://www.apache.org/licenses/LICENSE-2.0.html
 
-// @host localhost:3000
 // @query.collection.format multi
 
 // @securityDefinitions.basic BasicAuth
@@ -55,20 +50,7 @@ import (
 
 // @x-extension-openapi {"example": "value on a json format"}
 func main() {
-	// r := routes.Init()
-	r := gin.Default()
-
-	r.GET("/health", handlers.HealthHandler)
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
-	userV1 := r.Group("/user")
-	{
-		userHandler := handlers.NewUserHandler()
-		userV1.POST("", userHandler.CreateUserHandler)
-
-		userV1.GET("/:user_id", userHandler.GetUserHandler)
-		userV1.PUT("/:user_id", userHandler.UpdateUserHandler)
-	}
+	r := routes.Init()
 
 	r.Run(":3000")
 }
